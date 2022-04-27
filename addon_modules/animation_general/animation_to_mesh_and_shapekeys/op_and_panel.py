@@ -26,6 +26,7 @@ from c0s_lewd_utilities.addon_utils.general.propertygroup_handler import get_pro
 from c0s_lewd_utilities.addon_utils.general.operator_handler import PollMethods as OpPollMethods
 from c0s_lewd_utilities.addon_utils.general.panel_handler import PollMethods as PanelPollMethods
 from c0s_lewd_utilities.toolbox_1_0_0 import create_real_mesh, select_objects
+from c0s_lewd_utilities.names import is_print_enabled
 
 
 _data_path = "c0_lewd_utilities.animation.shapekey_convert"
@@ -48,7 +49,6 @@ class OBJECT_OT_animate_with_shapekeys(bpy.types.Operator):
 
         area_orig = AreaTypeChanger.change_area_to_good_type(context)
         # some functions below have problems working if context.area.type is "PROPERTIES", and this will be the case with this operator.
-
 
         # materials and vertex groups get copied once at the beginning by default
         if only_current_frame == True:
@@ -77,7 +77,7 @@ class OBJECT_OT_animate_with_shapekeys(bpy.types.Operator):
                     print(self.as_keywords())
                     return {'CANCELLED'}
 
-            sk_converter.go_over_multiple_frames_at_once(frame_start=frame_first, frame_end=frame_last)
+            sk_converter.go_over_multiple_frames_at_once(frame_start=frame_first, frame_end=frame_last, print_frames=is_print_enabled(context=context))
 
         select_objects.select_objects(context=context, object_list=[obj_new], deselect_others=True)
 

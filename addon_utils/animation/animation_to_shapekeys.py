@@ -61,7 +61,7 @@ class AnimationToShapekeyConverter():
         self.__keep_vertex_groups = keep_vertex_groups
         self.__keep_materials = keep_materials
 
-    #TODO (future): enable using multiple objects to get one combined object
+    # TODO (future): enable using multiple objects to get one combined object
 
     def set_obj_new(self, obj_new=None, frame="CURRENT") -> bpy.types.Object:
         """Sets the new object to use. If you want to add the shapekeys to an already existing object,
@@ -174,7 +174,7 @@ class AnimationToShapekeyConverter():
         """
         everything_key_frames.create_key_frames_fast(fcurve=fcurve, values=[frame - 1, 0, frame, 1, frame + 1, 0])
 
-    def add_frame_as_shapekey(self, frame="CURRENT") -> bpy.types.ShapeKey:
+    def add_frame_as_shapekey(self, frame="CURRENT", print_frame=False) -> bpy.types.ShapeKey:
         """Adds the shape of the original object at the specified frame to the new object.
 
         Uses AreaTypeChanger, meaning it might speed things up if you use it once before a loop to prevent frequent area changes.
@@ -183,6 +183,8 @@ class AnimationToShapekeyConverter():
         ----------
         frame : int or "CURRENT"
             Frame from which to take the shape from.
+        print_frame : bool
+            Print the current frame to the console?
 
         Returns
         -------
@@ -192,6 +194,8 @@ class AnimationToShapekeyConverter():
         area_orig = AreaTypeChanger.change_area_to_good_type(context=self.main_context)
         if frame == "CURRENT":
             frame = self.main_context.scene.frame_current
+        if print_frame == True:
+            print("Current frame: ", frame)
         mesh_current_shape = self._get_mesh_current_shape(frame=frame)
         shapekey_new = shapekeys.create_shapekey(
             obj=self.__obj_new,
@@ -205,7 +209,7 @@ class AnimationToShapekeyConverter():
         AreaTypeChanger.reset_area(area_orig)
         return shapekey_new
 
-    def go_over_multiple_frames_at_once(self, frame_start, frame_end):
+    def go_over_multiple_frames_at_once(self, frame_start, frame_end, print_frames=False):
         """Calls add_frame_as_shapekey() in a loop over the specified frame range.
 
         Parameters
@@ -214,9 +218,14 @@ class AnimationToShapekeyConverter():
             First frame of the animation
         frame_end : int
             Last frame of the animation
+        print_frames : bool
+            Print the current frames to the console?
         """
         area_orig = AreaTypeChanger.change_area_to_good_type(context=self.main_context)
+        if print_frames == True:
+            print("\n\nStarting conversion of animation to shapekeys.")
         for f in range(frame_start, frame_end + 1):
-            print(f)
-            self.add_frame_as_shapekey(frame=f)
+            self.add_frame_as_shapekey(frame=f, print_frame=print_frames)
+        if print_frames == True:
+            print("Conversion finished.")
         AreaTypeChanger.reset_area(area_orig)

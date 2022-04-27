@@ -41,6 +41,12 @@ class OBJECT_PT_c0_lewd_utilities_main(bpy.types.Panel):
         layout = self.layout
         layout.use_property_split = True
 
+        layout.prop(
+            data=context.workspace.c0_lewd_utilities,
+            property=names.prints_enabled_name,
+            text="Enable print statements in console"
+        )
+
 
 from c0s_lewd_utilities.addon_modules import list_of_panels
 all_object_child_panels.update(list_of_panels)

@@ -25,3 +25,9 @@
 
 addon_name = "C0s Lewd Utilities"  # name of the module. The bl_info dictionary in __init__.py is supposed to have the same name,
 # but cannot actually access the variable for reasons.
+
+prints_enabled_name = "prints_enabled"
+
+def is_print_enabled(context):
+    """Is the option to print things into Blender console for the user enabled?"""
+    return context.workspace.c0_lewd_utilities.prints_enabled

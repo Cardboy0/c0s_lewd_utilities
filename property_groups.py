@@ -36,17 +36,14 @@ class PropertyGroups():
     class ObjectAnimationToShapekeys(bpy.types.PropertyGroup):
         pass
 
-
-class Cardboy0ObjectMiscAnimateWithShapekeys(bpy.types.PropertyGroup):
-    frame_start: bpy.props.IntProperty(default=1, description="The starting frame of your animation")
-    frame_end: bpy.props.IntProperty(default=100, description="The last frame of your animation")
-    apply_transforms: bpy.props.BoolProperty(default=1, description="Result will look like any type of transformation of the original object was applied.\nThis includes delta transforms and constraints")
-    keep_vertex_groups: bpy.props.BoolProperty(default=1, description="Do you want the new object to keep any vertex groups of the original?")
-    keep_materials: bpy.props.BoolProperty(default=1, description="Do you want your new object to keep its original materials? I know almost nothing about materials to be honest")
-    only_current_frame: bpy.props.BoolProperty(default=0, description="Instead of converting a whole animation that spans over several frames, creates an 'applied' version of your object with the current shape")
+    ##############################################
+    ############Workspace properties##############
+    ##############################################
+    class WorkspaceMainProps(bpy.types.PropertyGroup):
+        pass
 
 
-prop_dict = {
+prop_dict_object = {
     "animation": {
         "_CLASS": PropertyGroups.ObjectAnimationMain,
         "shapekey_convert": {
@@ -63,16 +60,30 @@ prop_dict = {
     }
 }
 
+prop_dict_workspace = {
+    "prints_enabled": bpy.props.BoolProperty(default=False, description="Show some progress of operators in the Blender console"),
+}
+
 
 def register():
-    register_unregister_propertygroups_recursive(main_prop_group=PropertyGroups.ObjectMainProps,
-                                                 prop_dict=prop_dict,
+    register_unregister_propertygroups_recursive(main_prop_group=PropertyGroups.WorkspaceMainProps,
+                                                 prop_dict=prop_dict_workspace,
                                                  register=True)
+    register_unregister_propertygroups_recursive(main_prop_group=PropertyGroups.ObjectMainProps,
+                                                 prop_dict=prop_dict_object,
+                                                 register=True)
+    bpy.types.WorkSpace.c0_lewd_utilities = bpy.props.PointerProperty(type=PropertyGroups.WorkspaceMainProps)
     bpy.types.Object.c0_lewd_utilities = bpy.props.PointerProperty(type=PropertyGroups.ObjectMainProps)
 
 
 def unregister():
     del bpy.types.Object.c0_lewd_utilities
+    del bpy.types.WorkSpace.c0_lewd_utilities
     register_unregister_propertygroups_recursive(main_prop_group=PropertyGroups.ObjectMainProps,
-                                                 prop_dict=prop_dict,
+                                                 prop_dict=prop_dict_object,
                                                  register=False)
+    register_unregister_propertygroups_recursive(main_prop_group=PropertyGroups.WorkspaceMainProps,
+                                                 prop_dict=prop_dict_workspace,
+                                                 register=False)
+
+
