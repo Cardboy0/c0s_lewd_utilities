@@ -1,0 +1,1 @@
+This folder mainly contains code that is used at multiple different places in this add-on.

@@ -23,10 +23,10 @@
 import bpy
 from c0s_lewd_utilities import names
 
-all_object_child_panels = []
+all_object_child_panels = set()
 
 
-class OBJECT_PT_relations(bpy.types.Panel):  # TODO change panel name, just to check if duplicates will lead to problems
+class OBJECT_PT_c0_lewd_utilities_main(bpy.types.Panel):
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_order = 100  # custom properties panel SHOULD be last with a value of 1000, but this is acting weird
@@ -38,15 +38,20 @@ class OBJECT_PT_relations(bpy.types.Panel):  # TODO change panel name, just to c
 
     def draw(self, context):
         # self.layout.col()
-        self.layout.use_property_split = True
+        layout = self.layout
+        layout.use_property_split = True
+
+
+from c0s_lewd_utilities.addon_modules import list_of_panels
+all_object_child_panels.update(list_of_panels)
 
 
 def register():
-    bpy.utils.register_class(OBJECT_PT_relations)
+    bpy.utils.register_class(OBJECT_PT_c0_lewd_utilities_main)
     for object_panel in all_object_child_panels:
         if hasattr(object_panel, "bl_parent_id") == False:
             # every panel that does not have a parent panel of its own will get the main object panel as its parent.
-            object_panel.bl_parent_id = OBJECT_PT_relations.__name__
+            object_panel.bl_parent_id = OBJECT_PT_c0_lewd_utilities_main.__name__
         bpy.utils.register_class(object_panel)
 
 
@@ -54,4 +59,4 @@ def unregister():
     # unregister child panels first, then the main ones.
     for object_panel in all_object_child_panels:
         bpy.utils.unregister_class(object_panel)
-    bpy.utils.unregister_class(OBJECT_PT_relations)
+    bpy.utils.unregister_class(OBJECT_PT_c0_lewd_utilities_main)

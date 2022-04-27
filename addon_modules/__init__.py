@@ -18,20 +18,9 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# contains all operators of this add-on
+list_of_operators=set()
+list_of_panels=set()
 
-import bpy
-
-all_object_operators = set()
-
-from c0s_lewd_utilities.addon_modules import list_of_operators
-
-all_object_operators.update(list_of_operators)
-
-def register():
-    for op in all_object_operators:
-        bpy.utils.register_class(op)
-
-def unregister():
-    for op in all_object_operators:
-        bpy.utils.unregister_class(op)
+from .animation_general.animation_to_mesh_and_shapekeys.op_and_panel import OBJECT_OT_animate_with_shapekeys, OBJECT_PT_animate_with_shapekeys
+list_of_operators.add(OBJECT_OT_animate_with_shapekeys)
+list_of_panels.add(OBJECT_PT_animate_with_shapekeys)

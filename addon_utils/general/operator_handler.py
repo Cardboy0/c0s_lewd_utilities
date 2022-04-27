@@ -18,20 +18,22 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# contains all operators of this add-on
-
 import bpy
 
-all_object_operators = set()
+class PollMethods():
+    """Provides poll methods for operators.
 
-from c0s_lewd_utilities.addon_modules import list_of_operators
+    More info: https://docs.blender.org/api/current/bpy.types.Operator.html#bpy.types.Operator.poll
+    """
+    @classmethod
+    def is_object_with_mesh(clss, obj):
+        """Simple poll method that checks if the active object has a mesh (and not something else, like a light or camera.)
 
-all_object_operators.update(list_of_operators)
-
-def register():
-    for op in all_object_operators:
-        bpy.utils.register_class(op)
-
-def unregister():
-    for op in all_object_operators:
-        bpy.utils.unregister_class(op)
+        Also checks that the object itself isn't None.
+        """
+        if obj==None:
+            return False
+        if type(obj.data) == bpy.types.Mesh:
+            return True
+        else:
+            return False
