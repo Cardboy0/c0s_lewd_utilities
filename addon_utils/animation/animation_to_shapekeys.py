@@ -223,7 +223,7 @@ class AnimationToShapekeyConverter():
         """
         area_orig = AreaTypeChanger.change_area_to_good_type(context=self.main_context)
         if print_frames == True:
-            print("\n\nStarting conversion of animation to shapekeys.")
+            print("\n\nStarting conversion of animation to shapekeys for object '"+ str(self.__obj_orig.name)+"'")
         for f in range(frame_start, frame_end + 1):
             self.add_frame_as_shapekey(frame=f, print_frame=print_frames)
         if print_frames == True:

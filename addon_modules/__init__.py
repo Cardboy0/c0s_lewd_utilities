@@ -24,3 +24,7 @@ list_of_panels=set()
 from .animation_general.animation_to_mesh_and_shapekeys.op_and_panel import OBJECT_OT_animate_with_shapekeys, OBJECT_PT_animate_with_shapekeys
 list_of_operators.add(OBJECT_OT_animate_with_shapekeys)
 list_of_panels.add(OBJECT_PT_animate_with_shapekeys)
+
+from .animation_general.object_imposters.op_and_panel import OBJECT_OT_create_imposter, OBJECT_PT_create_imposter
+list_of_operators.add(OBJECT_OT_create_imposter)
+list_of_panels.add(OBJECT_PT_create_imposter)

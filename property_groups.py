@@ -36,6 +36,9 @@ class PropertyGroups():
     class ObjectAnimationToShapekeys(bpy.types.PropertyGroup):
         pass
 
+    class ObjectImposterCreator(bpy.types.PropertyGroup):
+        pass
+
     ##############################################
     ############Workspace properties##############
     ##############################################
@@ -56,12 +59,16 @@ prop_dict_object = {
                                                            poll=PollMethods.object_data_is_one_of({bpy.types.Mesh}),
                                                            update=UpdateMethods.just_use_poll_method(attr_name=s),
                                                            description="If left empty, a new object for the shapekeys will be created automatically.\nIf you choose a target object, that already existing object will get the shapekeys instead")
+        },
+        "imposter_creator": {
+            "_CLASS": PropertyGroups.ObjectImposterCreator,
+            "mimic_transforms": bpy.props.BoolProperty(default=True, description="Mimic the transformations (location, rotation, scale) of your original object as well?")
         }
     }
 }
 
 prop_dict_workspace = {
-    "prints_enabled": bpy.props.BoolProperty(default=False, description="Show some progress of operators in the Blender console"),
+    "prints_enabled": bpy.props.BoolProperty(default=False, description="Show some progress of operators in the Blender console.\nOnly affects certain operators"),
 }
 
 
@@ -85,5 +92,3 @@ def unregister():
     register_unregister_propertygroups_recursive(main_prop_group=PropertyGroups.WorkspaceMainProps,
                                                  prop_dict=prop_dict_workspace,
                                                  register=False)
-
-

@@ -106,7 +106,8 @@ def register_unregister_propertygroups_recursive(main_prop_group, prop_dict, reg
 
 
 def get_props_from_string(object, datapath):
-    """Returns the property from 
+    """Returns the property from a python object.
+    This could be a normal Blender object in your scene, but also the scene itself, the context, whatever.
 
     Parameters
     ----------
