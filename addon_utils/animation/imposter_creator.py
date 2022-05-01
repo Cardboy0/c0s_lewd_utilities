@@ -118,6 +118,8 @@ class ImposterCreator():
         node_copy_obj_data.location = (-200, -320)
         # node_join_geometry.location = (100, -240)
         gh.main_output_node.location = (340, -240)
+        
+        gh.deselect_all_nodes()
 
         mod_geom_node.show_expanded = False
 

@@ -130,6 +130,50 @@ def get_props_from_string(object, datapath):
     return getter(object)
 
 
+class SpecialPropTypes():
+    """Property groups have access to bpy.props.PointerProperty to for instance show objects, which is pretty cool.\\
+    For that example, you would write:\\
+    target_obj: bpy.props.PointerProperty(type=bpy.types.Object)
+
+    Not everything blender-related can be put in there though, an example being bpy.types.VertexGroup.\\
+    To implement them properly, other methods must be used, and that's what this class is supposed to be for.
+
+    The methods here will also include descriptions on what panel prop you should choose to properly display your property.
+    """
+
+    @classmethod
+    def __get_rid_of_Nones(clss, dict):
+        for key, value in dict.copy().items():
+            if value==None:
+                del dict[key]
+
+    @classmethod
+    def get_vertex_group_prop(clss, name=None, description=None, default=None):
+        """Get a property to be used for vertex groups.
+
+        Currently the way to deal with vertex group properties is by using String Properties.\\
+        The parameters of this method are the same as for bpy.props.StringProperty()\\
+        Parameters with "None" as the value will be ignored.
+
+        If you want to display this property in a panel, use:\\
+        layout.prop_search(search_data=obj, search_property="vertex_groups", etc.)
+
+        Parameters
+        ----------
+        name : str or None
+        description : str or None
+        default : str or None
+        """
+        argument_dict = {
+            "name":name,
+            "description": description,
+            "default": default
+        }
+        clss.__get_rid_of_Nones(argument_dict)
+        return bpy.props.StringProperty(**argument_dict)
+    
+
+
 class PollMethods():
     """Some PropertyGroup attributes accept poll methods, for instance PointerProperties:\\
     class MyProps(bpy.types.PropertyGroup):

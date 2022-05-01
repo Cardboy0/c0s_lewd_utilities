@@ -19,7 +19,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import bpy
-from c0s_lewd_utilities.addon_utils.general.propertygroup_handler import register_unregister_propertygroups_recursive, PollMethods, UpdateMethods
+from c0s_lewd_utilities.addon_utils.general.propertygroup_handler import register_unregister_propertygroups_recursive, PollMethods, UpdateMethods, SpecialPropTypes
 
 
 class PropertyGroups():
@@ -37,6 +37,9 @@ class PropertyGroups():
         pass
 
     class ObjectImposterCreator(bpy.types.PropertyGroup):
+        pass
+
+    class ObjectMimicDeforms(bpy.types.PropertyGroup):
         pass
 
     ##############################################
@@ -63,6 +66,18 @@ prop_dict_object = {
         "imposter_creator": {
             "_CLASS": PropertyGroups.ObjectImposterCreator,
             "mimic_transforms": bpy.props.BoolProperty(default=True, description="Mimic the transformations (location, rotation, scale) of your original object as well?")
+        },
+        "mimic_deforms": {
+            "_CLASS": PropertyGroups.ObjectMimicDeforms,
+            "vg_mask": SpecialPropTypes.get_vertex_group_prop(description="Limit deformations to vertices in that Vertex Group." +
+                                                              "\nWeights with a value of 0.0 will be ignored."+
+                                                              "\n\nWARNING: Some other groups (such as a vertex color group) can override your chosen vertex group if they share the same name"),
+            (s := "target_obj"): bpy.props.PointerProperty(type=bpy.types.Object,
+                                                           poll=PollMethods.object_data_is_one_of({bpy.types.Mesh}),
+                                                           update=UpdateMethods.just_use_poll_method(attr_name=s),
+                                                           description="Object where to get your deformations from")
+
+
         }
     }
 }

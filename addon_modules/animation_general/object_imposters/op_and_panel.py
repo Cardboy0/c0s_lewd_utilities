@@ -32,7 +32,7 @@ _data_path = "c0_lewd_utilities.animation.imposter_creator"
 class OBJECT_OT_create_imposter(bpy.types.Operator):
     bl_idname = "object.create_imposter_object"
     bl_label = "Creates a new object that will always display the current geometry of your original object, even if that geometry changes."
-    bl_description = "Creates a new object that will always display the current geometry of your original object, even if that geometry changes."
+    bl_description = bl_label
     bl_info = {"UNDO"}
 
     def execute(self, context):

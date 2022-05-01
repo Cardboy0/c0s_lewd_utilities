@@ -28,3 +28,7 @@ list_of_panels.add(OBJECT_PT_animate_with_shapekeys)
 from .animation_general.object_imposters.op_and_panel import OBJECT_OT_create_imposter, OBJECT_PT_create_imposter
 list_of_operators.add(OBJECT_OT_create_imposter)
 list_of_panels.add(OBJECT_PT_create_imposter)
+
+from .animation_general.mimic_deforms.op_and_panel import OBJECT_OT_mimic_deforms, OBJECT_PT_mimic_deforms
+list_of_operators.add(OBJECT_OT_mimic_deforms)
+list_of_panels.add(OBJECT_PT_mimic_deforms)

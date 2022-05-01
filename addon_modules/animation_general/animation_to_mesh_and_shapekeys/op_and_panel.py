@@ -35,7 +35,7 @@ _data_path = "c0_lewd_utilities.animation.shapekey_convert"
 class OBJECT_OT_animate_with_shapekeys(bpy.types.Operator):
     bl_idname = "object.animate_with_shapekeys"
     bl_label = "Converts the animation of an object to keyframed shapekeys and adds them to a new or another already existing object."
-    bl_description = "Converts the animation of an object to keyframed shapekeys and adds them to a new or another already existing object"
+    bl_description = bl_label
     bl_info = {"UNDO"}
 
     def execute(self, context):
@@ -74,7 +74,6 @@ class OBJECT_OT_animate_with_shapekeys(bpy.types.Operator):
                 if sk_converter.is_given_obj_new_valid() == False:
                     AreaTypeChanger.reset_area(area_orig)
                     self.report({'ERROR'}, "target object does not have the same topology of your main object (if every modifier had been applied).")
-                    print(self.as_keywords())
                     return {'CANCELLED'}
 
             sk_converter.go_over_multiple_frames_at_once(frame_start=frame_first, frame_end=frame_last, print_frames=is_print_enabled(context=context))
