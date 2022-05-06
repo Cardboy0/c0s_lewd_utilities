@@ -22,11 +22,11 @@
 
 import bpy
 
-all_object_operators = set()
+all_object_operators = list()
 
 from c0s_lewd_utilities.addon_modules import list_of_operators
 
-all_object_operators.update(list_of_operators)
+all_object_operators.extend(list_of_operators)
 
 def register():
     for op in all_object_operators:

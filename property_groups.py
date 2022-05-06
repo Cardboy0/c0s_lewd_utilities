@@ -42,6 +42,9 @@ class PropertyGroups():
     class ObjectMimicDeforms(bpy.types.PropertyGroup):
         pass
 
+    class ObjectShrinkwrapSetup(bpy.types.PropertyGroup):
+        pass
+
     ##############################################
     ############Workspace properties##############
     ##############################################
@@ -70,15 +73,26 @@ prop_dict_object = {
         "mimic_deforms": {
             "_CLASS": PropertyGroups.ObjectMimicDeforms,
             "vg_mask": SpecialPropTypes.get_vertex_group_prop(description="Limit deformations to vertices in that Vertex Group." +
-                                                              "\nWeights with a value of 0.0 will be ignored."+
+                                                              "\nWeights with a value of 0.0 will be ignored." +
                                                               "\n\nWARNING: Some other groups (such as a vertex color group) can override your chosen vertex group if they share the same name"),
             (s := "target_obj"): bpy.props.PointerProperty(type=bpy.types.Object,
                                                            poll=PollMethods.object_data_is_one_of({bpy.types.Mesh}),
                                                            update=UpdateMethods.just_use_poll_method(attr_name=s),
                                                            description="Object where to get your deformations from")
-
-
         }
+    },
+    "shrinkwrap_setup": {
+        "_CLASS": PropertyGroups.ObjectShrinkwrapSetup,
+        "target_vg": SpecialPropTypes.get_vertex_group_prop(description="Vertices to be affected by all this.\nThe weights themselves don't matter"),
+        (s := "target_obj"): bpy.props.PointerProperty(type=bpy.types.Object,
+                                                       poll=PollMethods.object_data_is_one_of({bpy.types.Mesh}),
+                                                       update=UpdateMethods.just_use_poll_method(attr_name=s),
+                                                       description="The target object your main object is supposed to shrinkwrap to"),
+        (s := "axis_parent"): bpy.props.PointerProperty(type=bpy.types.Object,
+                                                        poll=PollMethods.object_is_not_self(), #can be any object or None, just not itself
+                                                        update=UpdateMethods.just_use_poll_method(attr_name=s),
+                                                        description="An object that acts as a parent for the created axis proxy.\nIf you choose an armature, you can also use a single bone"),
+        "bone_parent": SpecialPropTypes.get_bone_prop(description="Bone to use as the axis proxy parent")
     }
 }
 

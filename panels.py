@@ -23,7 +23,7 @@
 import bpy
 from c0s_lewd_utilities import names
 
-all_object_child_panels = set()
+all_object_child_panels = list()
 
 
 class OBJECT_PT_c0_lewd_utilities_main(bpy.types.Panel):
@@ -49,7 +49,7 @@ class OBJECT_PT_c0_lewd_utilities_main(bpy.types.Panel):
 
 
 from c0s_lewd_utilities.addon_modules import list_of_panels
-all_object_child_panels.update(list_of_panels)
+all_object_child_panels.extend(list_of_panels)
 
 
 def register():
