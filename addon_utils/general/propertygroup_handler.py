@@ -144,7 +144,7 @@ class SpecialPropTypes():
     @classmethod
     def __get_rid_of_Nones(clss, dict):
         for key, value in dict.copy().items():
-            if value==None:
+            if value == None:
                 del dict[key]
 
     @classmethod
@@ -165,13 +165,37 @@ class SpecialPropTypes():
         default : str or None
         """
         argument_dict = {
-            "name":name,
+            "name": name,
             "description": description,
             "default": default
         }
         clss.__get_rid_of_Nones(argument_dict)
         return bpy.props.StringProperty(**argument_dict)
-    
+
+    @classmethod
+    def get_bone_prop(clss, name=None, description=None, default=None):
+        """Get a property to be used for bones of armatures.
+
+        Currently the way to deal with bone properties is by using String Properties.\\
+        The parameters of this method are the same as for bpy.props.StringProperty()\\
+        Parameters with "None" as the value will be ignored.
+
+        If you want to display this property in a panel, use:\\
+        layout.prop_search(search_data=armature, search_property="bones", etc.)
+
+        Parameters
+        ----------
+        name : str or None
+        description : str or None
+        default : str or None
+        """
+        argument_dict = {
+            "name": name,
+            "description": description,
+            "default": default
+        }
+        clss.__get_rid_of_Nones(argument_dict)
+        return bpy.props.StringProperty(**argument_dict)
 
 
 class PollMethods():
@@ -185,11 +209,13 @@ class PollMethods():
     It does NOT however prevent someone from manually assigning a light object to the property from within the console.
     That's what "update" method arguments are probably for.
 
-    Programming note: 
+    Programming notes: 
     - All poll methods start with a "self" parameter. That has nothing to do with them being in a class,
     it is required to exist by the rules for poll methods.
     - All poll methods also have an "object" parameter. That is NOT an actual Blender object (like a cube), but an object of the type of your PointerProperty.
         For example, if you use bpy.props.PointerProperty(type=bpy.types.Scene, poll=A_POLL_METHOD), the "object" argument of the poll method will actually be a scene.
+    - Using a classmethod of this class directly as a poll method apparently doesn't work.\\
+        Instead, the classmethod in question must be called and return a separate function that will act as the poll method.
     """
 
     @classmethod
@@ -233,6 +259,23 @@ class PollMethods():
                     return True
                 else:
                     return False
+        return poll_function
+
+    @classmethod
+    def object_is_not_self(clss):
+        """
+        Returns a poll method (needs to be called).
+
+        Intended for when you're using a PointerProperty of type bpy.types.Object\\
+        Checks if the current prop value is the object itself.
+        """
+
+        def poll_function(self, object) -> bool:
+            main_obj = self.id_data
+            if main_obj == object:
+                return False
+            else:
+                return True
         return poll_function
 
 

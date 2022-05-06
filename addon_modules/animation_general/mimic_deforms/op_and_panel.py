@@ -22,7 +22,7 @@ import bpy
 
 from c0s_lewd_utilities.addon_utils.animation import mimic_deforms
 from c0s_lewd_utilities.addon_utils.general.propertygroup_handler import get_props_from_string
-from c0s_lewd_utilities.addon_utils.general.operator_handler import PollMethods as OpPollMethods
+from c0s_lewd_utilities.addon_utils.general.operator_handler import PollMethods as OpPollMethods, SpecialOperatorPropTypes
 from c0s_lewd_utilities.addon_utils.general.panel_handler import PollMethods as PanelPollMethods, SpecialPanelPropTypes
 from c0s_lewd_utilities.toolbox_1_0_0 import select_objects
 from c0s_lewd_utilities.names import is_print_enabled
@@ -41,21 +41,18 @@ class OBJECT_OT_mimic_deforms(bpy.types.Operator):
         obj_orig = context.active_object
         props = get_props_from_string(object=obj_orig, datapath=_data_path)
         obj_target = props.target_obj
-        name_vg_mask = props.vg_mask
-        if name_vg_mask == "":
-            vg_mask = None
-        else:
-            vg_mask = obj_orig.vertex_groups.get(name_vg_mask, False)
 
-        if vg_mask==False:
-            self.report({'ERROR'}, "No vertex group with the name '"+name_vg_mask+"' could be found!")
+        vg_mask = SpecialOperatorPropTypes.get_vertex_group(obj=obj_orig, vg_name=props.vg_mask)
+        if vg_mask == False:
+            self.report({'ERROR'}, "No vertex group with the name '" + props.vg_mask + "' could be found!")
             return {'CANCELLED'}
+
         elif mimic_deforms.MimicDeforms.is_valid(context=context, obj_orig=obj_orig, obj_target=obj_target):
-            helper = mimic_deforms.MimicDeforms(context=context, obj=obj_orig,vertex_group=vg_mask)
+            helper = mimic_deforms.MimicDeforms(context=context, obj=obj_orig, vertex_group=vg_mask)
             helper.fill(target_obj=obj_target)
             return {'FINISHED'}
         else:
-            self.report({'ERROR'}, "Your object and '"+obj_target.name+"' show different amounts of vertices in viewport!")
+            self.report({'ERROR'}, "Your object and '" + obj_target.name + "' show different amounts of vertices in viewport!")
             return {'CANCELLED'}
 
     @classmethod
@@ -84,14 +81,14 @@ class OBJECT_PT_mimic_deforms(bpy.types.Panel):
             property="target_obj",
             text="Target Object"
         )
-        
+
         SpecialPanelPropTypes.get_vertex_group_panel_prop(
             layout=layout,
             data=props,
             property_name="vg_mask",
             obj=obj_orig,
             text="Vertex Mask"
-        )        
+        )
 
         layout.operator(
             operator=OBJECT_OT_mimic_deforms.bl_idname,

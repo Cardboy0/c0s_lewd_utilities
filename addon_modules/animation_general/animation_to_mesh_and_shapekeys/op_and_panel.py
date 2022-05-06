@@ -24,7 +24,7 @@ from c0s_lewd_utilities.addon_utils.animation import animation_to_shapekeys
 from c0s_lewd_utilities.addon_utils.context_related.area_type_changer import AreaTypeChanger
 from c0s_lewd_utilities.addon_utils.general.propertygroup_handler import get_props_from_string
 from c0s_lewd_utilities.addon_utils.general.operator_handler import PollMethods as OpPollMethods
-from c0s_lewd_utilities.addon_utils.general.panel_handler import PollMethods as PanelPollMethods
+from c0s_lewd_utilities.addon_utils.general.panel_handler import PollMethods as PanelPollMethods, SpecialPanelPropTypes
 from c0s_lewd_utilities.toolbox_1_0_0 import create_real_mesh, select_objects
 from c0s_lewd_utilities.names import is_print_enabled
 
@@ -143,6 +143,10 @@ class OBJECT_PT_animate_with_shapekeys(bpy.types.Panel):
             data=props,
             property="apply_transforms",
             text="Apply Transforms")
+
+        SpecialPanelPropTypes.get_warning_label(layout,
+                                                "Shapekeys for objects with many vertices can take up HUGE amounts of storage space",
+                                                "A single shapekey of a mesh with 1 million vertices will add over a dozen Megabytes to your File")
 
         layout.operator(
             operator=OBJECT_OT_animate_with_shapekeys.bl_idname,
