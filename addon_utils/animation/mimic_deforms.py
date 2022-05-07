@@ -40,7 +40,7 @@ class MimicDeforms():
         """Ever had two objects with the same topology (vertices) but different deformations, and wanted one object to mimic the deformation of the other object?\\
         With this class, you can do that!
 
-        Based on a Geometry Node modifier. The required node group layout is shown in nodegroup_layout.jpg, which should be in the same folder as this class.
+        Based on a Geometry Node modifier. The required node group layout is shown in mimic_deforms_nodegroup_layout.jpg, which should be in the same folder as this class.
 
         Parameters
         ----------
@@ -120,7 +120,7 @@ class MimicDeforms():
     def is_valid(clss, context, obj_orig, obj_target):
         """Checks if two objects are eligible to be used for this class.
 
-        Currently just checks if they have the same number of vertices shown in viewport.
+        Currently just checks if both objects actually have meshes and if they show the same number of vertices in viewport.
 
         Parameters
         ----------
@@ -135,6 +135,9 @@ class MimicDeforms():
         -------
         bool
         """
+        if type(obj_orig.data) != bpy.types.Mesh or type(obj_target.data) != bpy.types.Mesh:
+            return False
+
         area_orig = AreaTypeChanger.change_area_to_good_type(context=context)
         mesh_orig_applied = create_real_mesh.create_real_mesh_copy(
             context=context,
@@ -153,7 +156,7 @@ class MimicDeforms():
             keep_materials=False)
         AreaTypeChanger.reset_area(area_orig)
 
-        if len(mesh_orig_applied.vertices)!=len(mesh_target_applied.vertices):
+        if len(mesh_orig_applied.vertices) != len(mesh_target_applied.vertices):
             return False
 
         return True

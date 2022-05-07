@@ -28,8 +28,9 @@ class ImposterCreator():
     __obj_orig: bpy.types.Object
     obj_new: bpy.types.Object
     node_helper: node_helper.GeometryNodesModifierHandler
+    node_copy_obj_data: bpy.types.GeometryNodeObjectInfo
     mod_geom_node: bpy.types.NodesModifier
-    mod_data_transfer: bpy.types.DataTransferModifier
+    # mod_data_transfer: bpy.types.DataTransferModifier
     constr_rotation: bpy.types.CopyRotationConstraint
     constr_location: bpy.types.CopyLocationConstraint
     constr_scale: bpy.types.CopyScaleConstraint
@@ -59,7 +60,7 @@ class ImposterCreator():
         self.constr_rotation = None
         self.constr_location = None
         self.constr_scale = None
-        self.mod_data_transfer = None
+        # self.mod_data_transfer = None
         self.__created_imposter_vgs = []
         self.__used_imposter_vgs = []
         self.__unused_imposter_vgs = []
@@ -93,6 +94,7 @@ class ImposterCreator():
         gh = node_helper.GeometryNodesModifierHandler(mod_geom_node, reset=True)
         node_copy_obj_data = gh.add_node('GeometryNodeObjectInfo')
         node_copy_obj_data.inputs['Object'].default_value = obj_target
+        self.node_copy_obj_data = node_copy_obj_data
 
         # Important: The commented code that you see below is how it was originally done.
         # It uses a "Join Geometry" node to join the empty mesh of our object with the mesh of the target object.

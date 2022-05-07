@@ -54,6 +54,11 @@ class AnimationToShapekeyConverter():
         keep_materials : bool
             Include the original materials and their values on the new object (not used if the new object is given by the user)\\
             Not properly tested.
+
+        Warnings
+        --------
+        The shapekeys created with this are in no way storage efficient.\\
+        One shapekey (for a SINGLE frame) of a mesh with 1 Million vertices will add more than a dozen Mega Bytes to your file alone. 
         """
         self.main_context = main_context
         self.__obj_orig = obj_orig
