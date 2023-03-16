@@ -15,6 +15,6 @@ TODO add how to download
 TODO add guide
 
 # Social Media
-Twitter: https://twitter.com/cardboy0
-DeviantArt: https://www.deviantart.com/cardboy0
-Github: https://github.com/Cardboy0
+Twitter: https://twitter.com/cardboy0     
+DeviantArt: https://www.deviantart.com/cardboy0     
+Github: https://github.com/Cardboy0      
