@@ -23,6 +23,7 @@ from c0s_lewd_utilities import names
 from c0s_lewd_utilities import property_groups
 from c0s_lewd_utilities import operators
 from c0s_lewd_utilities import panels
+from c0s_lewd_utilities import failed_imports
 
 bl_info = {
     # "name": names.addon_name,   # Apparently trying to use a variable from another module here will give you an error. For whatever reason.
@@ -45,6 +46,11 @@ def register():
     property_groups.register()
     operators.register()
     panels.register()
+    if len(failed_imports.list_of_failed_imports) != 0:
+        print("Importing failed for:")
+        for tuple in failed_imports.list_of_failed_imports:
+            print("\t" + tuple[0])
+            print("\treason: " + str(tuple[1]))
 
 
 def unregister():

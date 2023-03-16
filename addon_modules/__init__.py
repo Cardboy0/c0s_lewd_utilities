@@ -34,25 +34,38 @@ class OBJECT_PT_animation_misc(bpy.types.Panel):
 
 list_of_operators = list()
 list_of_panels = list()
+list_of_failed_imports = list()
 
 list_of_panels.append(OBJECT_PT_animation_misc)
 
-from .animation_general.animation_to_mesh_and_shapekeys.op_and_panel import OBJECT_OT_animate_with_shapekeys, OBJECT_PT_animate_with_shapekeys
-list_of_operators.append(OBJECT_OT_animate_with_shapekeys)
-list_of_panels.append(OBJECT_PT_animate_with_shapekeys)
-OBJECT_PT_animate_with_shapekeys.bl_parent_id = OBJECT_PT_animation_misc.__name__
+try:
+    from .animation_general.animation_to_mesh_and_shapekeys.op_and_panel import OBJECT_OT_animate_with_shapekeys, OBJECT_PT_animate_with_shapekeys
+    list_of_operators.append(OBJECT_OT_animate_with_shapekeys)
+    list_of_panels.append(OBJECT_PT_animate_with_shapekeys)
+    OBJECT_PT_animate_with_shapekeys.bl_parent_id = OBJECT_PT_animation_misc.__name__
+except Exception as e:
+    list_of_failed_imports.append(("animation_general.animation_to_mesh_and_shapekeys", e))
 
-from .animation_general.object_imposters.op_and_panel import OBJECT_OT_create_imposter, OBJECT_PT_create_imposter
-list_of_operators.append(OBJECT_OT_create_imposter)
-list_of_panels.append(OBJECT_PT_create_imposter)
-OBJECT_PT_create_imposter.bl_parent_id = OBJECT_PT_animation_misc.__name__
+try:
+    from .animation_general.object_imposters.op_and_panel import OBJECT_OT_create_imposter, OBJECT_PT_create_imposter
+    list_of_operators.append(OBJECT_OT_create_imposter)
+    list_of_panels.append(OBJECT_PT_create_imposter)
+    OBJECT_PT_create_imposter.bl_parent_id = OBJECT_PT_animation_misc.__name__
+except Exception as e:
+    list_of_failed_imports.append(("animation_general.object_imposters", e))
 
-from .animation_general.mimic_deforms.op_and_panel import OBJECT_OT_mimic_deforms, OBJECT_PT_mimic_deforms
-list_of_operators.append(OBJECT_OT_mimic_deforms)
-list_of_panels.append(OBJECT_PT_mimic_deforms)
-OBJECT_PT_mimic_deforms.bl_parent_id = OBJECT_PT_animation_misc.__name__
+try:
+    from .animation_general.mimic_deforms.op_and_panel import OBJECT_OT_mimic_deforms, OBJECT_PT_mimic_deforms
+    list_of_operators.append(OBJECT_OT_mimic_deforms)
+    list_of_panels.append(OBJECT_PT_mimic_deforms)
+    OBJECT_PT_mimic_deforms.bl_parent_id = OBJECT_PT_animation_misc.__name__
+except Exception as e:
+    list_of_failed_imports.append(("animation_general.mimic_deforms", e))
 
-from .shrinkwrap_setup.op_and_panel import OBJECT_OT_setup_shrinkwrap_mods, OBJECT_OT_rotate_axis_obj,OBJECT_PT_setup_shrinkwrap_mods
-list_of_operators.append(OBJECT_OT_setup_shrinkwrap_mods)
-list_of_operators.append(OBJECT_OT_rotate_axis_obj)
-list_of_panels.append(OBJECT_PT_setup_shrinkwrap_mods)
+try:
+    from .shrinkwrap_setup.op_and_panel import OBJECT_OT_setup_shrinkwrap_mods, OBJECT_OT_rotate_axis_obj, OBJECT_PT_setup_shrinkwrap_mods
+    list_of_operators.append(OBJECT_OT_setup_shrinkwrap_mods)
+    list_of_operators.append(OBJECT_OT_rotate_axis_obj)
+    list_of_panels.append(OBJECT_PT_setup_shrinkwrap_mods)
+except Exception as e:
+    list_of_failed_imports.append(("shrinkwrap_setup", e))
